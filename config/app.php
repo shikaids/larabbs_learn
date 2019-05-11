@@ -68,7 +68,7 @@ return [
     */
 
     //'timezone' => 'UTC',
-    'timezone' => 'Asia/Shanghai'
+    'timezone' => 'Asia/Shanghai',
 
     /*
     |--------------------------------------------------------------------------
