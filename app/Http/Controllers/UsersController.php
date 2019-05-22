@@ -29,7 +29,7 @@ class UsersController extends Controller
 
         // ImageUploadHandler 对文件后缀名做了限定，不允许的情况下将返回 false
         if ($request->avatar) {
-            $result = $uploader->save($request->avatar, 'avatars', $user->id);
+            $result = $uploader->save($request->avatar, 'avatars', $user->id, 416);
             if ($result) {
                 $data['avatar']  = $result['path'];
             }

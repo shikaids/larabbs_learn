@@ -2,6 +2,7 @@
 
 namespace App\Handlers;
 
+use Image;
 /**
  *
  */
@@ -10,7 +11,7 @@ class ImageUploadHandler
     // 只允许以下后缀的图片文件上传
     protected $allowed_ext = ["png", "jpg", "gif", 'jpeg'];
 
-    public function save($file, $folder, $file_prefix)
+    public function save($file, $folder, $file_prefix, $max_width = false)
     {
         // 构建存储的文件夹规则，值如：uploads/images/avatars/201709/21/
         // 文件夹切割能让查找效率更高。
@@ -35,8 +36,22 @@ class ImageUploadHandler
         // 将图片移动到我们的目标存储路径中
         $file->move($upload_path, $filename);
 
+        if ($max_width && $extension != 'gif') {
+            $this->reduceSize($upload_path . '/' . $filename, $max_width);
+        }
+
         return [
             'path' => config('app.url') . '/' . $folder_name . '/' . $filename,
         ];
+    }
+
+    public function reduceSize($file_path, $max_width) {
+        $image = Image::make($file_path);
+        $image->resize($max_width, null, function ($constrait) {
+            $constrait->aspectRatio();
+            $constrait->upsize();
+        });
+
+        $image->save();
     }
 }
