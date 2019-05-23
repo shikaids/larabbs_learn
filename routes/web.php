@@ -41,3 +41,5 @@ Route::get('email/resend', 'Auth\VerificationController@resend')->name('verifica
 // 本系统已有首页，这是脚手架默认生成的，删掉
 //Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('users', 'UsersController', ['only' => ['show', 'edit', 'update']]);
+
+Route::resource('topics', 'TopicsController', ['only' => ['index', 'show', 'create', 'store', 'update', 'edit', 'destroy']]);
