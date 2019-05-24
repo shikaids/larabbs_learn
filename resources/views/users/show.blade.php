@@ -29,7 +29,11 @@
       {{-- 用户发布的内容 --}}
       <div class="card">
         <div class="card-body">
-          暂无数据 ~_~
+          <ul class="nav nav-tabs">
+            <li class="nav-item"><a class="nav-link active bg-transparent" href="">Ta的话题</a></li>
+            <li class="nave-item"><a class="nav-like" href="#">Ta的回复</a></li>
+          </ul>
+          @include('users._topics', ['topics' => $user->topic()->recent()->paginate(5)])
         </div>
       </div>
     </div>
