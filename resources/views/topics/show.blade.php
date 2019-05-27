@@ -45,7 +45,7 @@
 </p> <label>Order</label>
 <p>
 	{{ $topic->order }}
-</p> <label>Exerpt</label>
+</p> <label>Excerpt</label>
 <p>
 	{{ $topic->exerpt }}
 </p> <label>Slug</label>

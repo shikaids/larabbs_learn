@@ -6,11 +6,14 @@ use App\Models\Topic;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TopicRequest;
+use App\Models\Category;
+use Auth;
 
 class TopicsController extends Controller
 {
     public function __construct()
     {
+        // 对除了 index() 和 show() 以外的方法使用 auth 中间件进行认证
         $this->middleware('auth', ['except' => ['index', 'show']]);
     }
 
@@ -28,13 +31,24 @@ class TopicsController extends Controller
 
 	public function create(Topic $topic)
 	{
-		return view('topics.create_and_edit', compact('topic'));
+		$categories = Category::all();
+        return view('topics.create_and_edit', compact('topic', 'categories'));
 	}
 
-	public function store(TopicRequest $request)
+	public function store(TopicRequest $request, Topic $topic)
 	{
-		$topic = Topic::create($request->all());
-		return redirect()->route('topics.show', $topic->id)->with('message', 'Created successfully.');
+       // 因为要使用到 Auth 类，所以需在文件顶部进行加载
+       // store() 方法的第二个参数，会创建一个空白的 $topic 实例
+       // $request->all() 获取所有用户的请求数据数组，如 ['title' => '标题', 'body' => '内容', ... ]
+       // Fill the model with an array of attributes. fill 方法会将传参的键值数组填充到模型的属性中
+       $topic->fill($request->all());
+
+       // Auth::id() 获取到的是当前登录的 ID
+       $topic->user_id = Auth::id();
+
+       // Save the model to the database.保存到数据库中
+       $topic->save();
+       return redirect()->route('topics.show', $topic->id)->with('message', '贴子创建成果！');
 	}
 
 	public function edit(Topic $topic)
