@@ -27,6 +27,18 @@ class TopicsController extends Controller
 
     public function show(Topic $topic)
     {
+        /**
+         * 当话题有 Slug 的时候，我们希望用户一直使用正确的、带着 Slug 的链接来访问。
+         * 我们可以在控制器中对 Slug 进行判断，当条件允许的时候，我们将发送 301 永久重定向指令给浏览器，跳转到带 Slug 的链接.
+         *
+         * 1 我们需要访问用户请求的路由参数 Slug，在 show() 方法中我们注入 $request
+         * 2 ! empty($topic->slug) 如果话题的 Slug 字段不为空
+         * 3 && $topic->slug != $request->slug 并且话题 Slug 不等于请求的路由参数 Slug
+         * 4 redirect($topic->link(), 301) 301 永久重定向到正确的 URL 上
+         */
+        if (!empty($topic->slug) && $topic->slug != $request->slug) {
+            return redirect($topic->link(), 301);
+        }
         return view('topics.show', compact('topic'));
     }
 
@@ -49,7 +61,8 @@ class TopicsController extends Controller
 
        // Save the model to the database.保存到数据库中
        $topic->save();
-       return redirect()->route('topics.show', $topic->id)->with('message', '贴子创建成果！');
+       //return redirect()->route('topics.show', $topic->id)->with('message', '贴子创建成功！');
+       return redirect()->to($topic->link())->with('message', '贴子创建成功！');
 	}
 
 	public function edit(Topic $topic)
@@ -64,7 +77,8 @@ class TopicsController extends Controller
 		$this->authorize('update', $topic);
 		$topic->update($request->all());
 
-		return redirect()->route('topics.show', $topic->id)->with('message', '更新成功！');
+		//return redirect()->route('topics.show', $topic->id)->with('message', '更新成功！');
+        return redirect()->to($topic->link())->with('message', '更新成功！');
 	}
 
 	public function destroy(Topic $topic)
