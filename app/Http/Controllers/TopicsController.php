@@ -25,7 +25,7 @@ class TopicsController extends Controller
 		return view('topics.index', compact('topics'));
 	}
 
-    public function show(Topic $topic)
+    public function show(Request $request, Topic $topic)
     {
         /**
          * 当话题有 Slug 的时候，我们希望用户一直使用正确的、带着 Slug 的链接来访问。
@@ -62,7 +62,7 @@ class TopicsController extends Controller
        // Save the model to the database.保存到数据库中
        $topic->save();
        //return redirect()->route('topics.show', $topic->id)->with('message', '贴子创建成功！');
-       return redirect()->to($topic->link())->with('message', '贴子创建成功！');
+       return redirect()->to($topic->link())->with('success', '贴子创建成功！');
 	}
 
 	public function edit(Topic $topic)
@@ -78,7 +78,7 @@ class TopicsController extends Controller
 		$topic->update($request->all());
 
 		//return redirect()->route('topics.show', $topic->id)->with('message', '更新成功！');
-        return redirect()->to($topic->link())->with('message', '更新成功！');
+        return redirect()->to($topic->link())->with('success', '更新成功！');
 	}
 
 	public function destroy(Topic $topic)
