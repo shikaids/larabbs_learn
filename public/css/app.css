@@ -16917,3 +16917,14 @@ pre code:after {
   line-height: 38px;
 }
 
+/* 回复列表 */
+
+.topic_reply a {
+  color: inherit;
+}
+
+.topic_reply .meta {
+  font-size: 0.9em;
+  color: #b3b3b3;
+}
+
