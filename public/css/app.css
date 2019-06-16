@@ -16928,3 +16928,18 @@ pre code:after {
   color: #b3b3b3;
 }
 
+/* 消息通知 */
+
+.notification-badge .badge {
+  font-size: 12px;
+  margin-top: 14px;
+}
+
+.badge-secondary {
+  background-color: #EBEBEB;
+}
+
+.badge-hint {
+  background-color: #d15b47 !important;
+}
+
